@@ -1,38 +1,42 @@
 import { model, Schema } from "mongoose";
 import { Troom } from "./room.interface";
 
-const RoomSchema = new Schema<Troom>({
+const roomSchema = new Schema<Troom>(
+  {
     name: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     roomNo: {
-        type: String,
-        required: true,
+      type: Number,
+      required: true,
     },
     floorNo: {
-        type: String,
-        required: true,
+      type: Number,
+      required: true,
     },
     capacity: {
-        type: Number,
-        required: true,
+      type: Number,
+      required: true,
     },
     pricePerSlot: {
-        type: Number,
-        required: true,
+      type: Number,
+      required: true,
     },
     amenities: {
-        type: [String],
-        required: true,
+      type: [String],
+      required: true,
     },
     isDeleted: {
-        type: Boolean,
-        default: false,
+      type: Boolean,
+      default: false,
     },
-}, { timestamps: true });
+  },
+  { timestamps: true }
+);
+
+const Room = model<Troom>("Room", roomSchema);
 
 
-const Room = model<Troom>("Room", RoomSchema);
 
 export default Room;

@@ -1,7 +1,7 @@
 export type Troom = {
     name: string;
-    roomNo: string;
-    floorNo: string;
+    roomNo: number;
+    floorNo: number;
     capacity: number;
     pricePerSlot: number;
     amenities: string[];
