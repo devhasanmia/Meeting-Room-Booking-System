@@ -6,3 +6,9 @@ export type TUser = {
     address: string;
     role: "user" | "admin";
 }
+
+export type TLogin = {
+    email: string;
+    password: string;
+  };
+  

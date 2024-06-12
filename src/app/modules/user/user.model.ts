@@ -30,11 +30,11 @@ const userSchema = new Schema<TUser>({
   },
 });
 
-// userSchema.pre("save", async function (next) {
-//   const user = this as TUser;
-//   user.password = await bcrypt.hash(user.password, 10);
-//   next();
-// });
+userSchema.pre("save", async function (next) {
+  const user = this as TUser;
+  user.password = await bcrypt.hash(user.password, 10);
+  next();
+});
 
 const User = model<TUser>("User", userSchema);
 
