@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { UserRoutes } from "../modules/user/user.route";
 import { RoomRoutes } from "../modules/room/room.route";
+import { SlotRoutes } from "../modules/slot/slot.route";
 const router = Router();
 const moduleRoutes = [
   {
@@ -10,6 +11,10 @@ const moduleRoutes = [
   {
     path: "/api",
     route: RoomRoutes,
+  },
+  {
+    path: "/api",
+    route: SlotRoutes,
   },
 ];
 

@@ -12,17 +12,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use("/", router);
-
-app.use(globalErrorHandler);
-app.use(notFound);
-app.get("/", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    statusCode: 200,
-    message: "Server is up and running!",
-  });
-});
-
 app.get("/api/v1/health", (req: Request, res: Response) => {
   res.status(200).json({
     status: "OK",
@@ -36,5 +25,17 @@ app.get("/api/v1/health", (req: Request, res: Response) => {
     dateTime: new Date().toLocaleString(),
   });
 });
+app.get("/", (req: Request, res: Response) => {
+  res.status(200).json({
+    success: true,
+    statusCode: 200,
+    message: "Server is up and running!",
+  });
+});
+app.use(globalErrorHandler);
+app.use(notFound);
+
+
+
 
 export default app;

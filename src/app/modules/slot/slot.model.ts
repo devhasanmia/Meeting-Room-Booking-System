@@ -24,3 +24,7 @@ const slotSchema = new Schema<Tslot>({
         required: true,
     },
 })
+
+const Slot = model<Tslot>("Slot", slotSchema);
+
+export default Slot;

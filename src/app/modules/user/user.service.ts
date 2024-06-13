@@ -29,7 +29,7 @@ const login = async (payload: TLogin) => {
       role: user.role,
     },
     config.SECRET_KEY as string,
-    { expiresIn: "60s" }
+    { expiresIn: "30d" }
   );
 
   const data = await User.findById(user._id).select("-password -__v");
