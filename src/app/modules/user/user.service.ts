@@ -22,7 +22,6 @@ const login = async (payload: TLogin) => {
   if (!isMatch) {
     throw new AppError(httpStatus.BAD_REQUEST, "Invalid Credentials");
   }
-
   const accessToken = jwt.sign(
     {
       userId: user._id,
@@ -30,7 +29,7 @@ const login = async (payload: TLogin) => {
       role: user.role,
     },
     config.SECRET_KEY as string,
-    { expiresIn: "1d" }
+    { expiresIn: "60s" }
   );
 
   const data = await User.findById(user._id).select("-password -__v");

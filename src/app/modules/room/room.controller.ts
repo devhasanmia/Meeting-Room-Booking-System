@@ -14,6 +14,7 @@ const createRoom: RequestHandler = catchAsync(async (req, res) => {
 });
 
 const getSingleRoom: RequestHandler = catchAsync(async (req, res) => {
+  console.log(req.user);
   const id = req.params.id;
   const room = await RoomService.getSingleRoom(id);
   res.status(200).json({

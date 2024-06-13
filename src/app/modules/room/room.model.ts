@@ -35,8 +35,18 @@ const roomSchema = new Schema<Troom>(
   { timestamps: true }
 );
 
+roomSchema.pre("find", function () {
+  this.where({ isDeleted: { $ne: true } });
+});
+
+roomSchema.pre("findOne", function () {
+  this.where({ isDeleted: { $ne: true } });
+});
+
+roomSchema.pre("findOneAndUpdate", function () {
+  this.where({ isDeleted: { $ne: true } });
+});
+
 const Room = model<Troom>("Room", roomSchema);
-
-
 
 export default Room;
