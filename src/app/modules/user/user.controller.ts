@@ -13,17 +13,19 @@ const signup: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
-const login = catchAsync(async (req: Request, res: Response) => {
-  const payload = req.body;
-  const user = await UserService.login(payload);
-  res.status(200).json({
-    success: true,
-    statusCode: 200,
-    message: "User logged in successfully",
-    token: user.token,
-    data: user.data,
-  });
-});
+const login: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const payload = req.body;
+    const user = await UserService.login(payload);
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: "User logged in successfully",
+      token: user.token,
+      data: user.data,
+    });
+  }
+);
 
 export const UserController = {
   signup,

@@ -21,7 +21,7 @@ const slotSchema = new Schema<Tslot>({
     },
     isBooked: {
         type: Boolean,
-        required: true,
+        default: false
     },
 })
 

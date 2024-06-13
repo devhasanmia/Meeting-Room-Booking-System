@@ -1,34 +1,36 @@
 import { model, Schema } from "mongoose";
 import { Tbooking } from "./booking.interface";
 
-
-const bookingSchema = new Schema<Tbooking>({
+const bookingSchema = new Schema<Tbooking>(
+  {
     room: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: "Room"
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "Room",
     },
-    slots: [{
+    slots: [
+      {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: "Slot"
-    }],
+        ref: "Slot",
+      },
+    ],
     user: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: "User"
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
     },
-    totalAmount: {
-        type: Number,
-        required: true
+    date: {
+      type: Date,
+      default: Date.now(),
     },
-    isConfirmed: {
-        type: String,
-        enum: ["confirmed", "unconfirmed", "canceled"],
-        default: "confirmed"
-    }
-}, { timestamps: true });
-
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestamps: true }
+);
 
 const Booking = model<Tbooking>("Booking", bookingSchema);
 

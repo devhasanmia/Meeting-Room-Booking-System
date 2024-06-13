@@ -1,17 +1,32 @@
 import AppError from "../../errors/AppError";
+import Room from "../room/room.model";
 import { Tslot } from "./slot.interface";
 import Slot from "./slot.model";
 
 const createSlot = async (payload: Tslot) => {
-    const slot = await Slot.create(payload);
-    if (!slot) {
-        throw new AppError(400, "Slot creation failed");
-    }
-    return slot;
-}
+  const room = await Room.findById(payload.room);
+  if (!room || room.isDeleted) {
+    throw new AppError(404, "Room not found");
+  }
+  const newSlot = await Slot.create(payload);
+  if (!newSlot) {
+    throw new AppError(400, "Slot creation failed");
+  }
+  return newSlot;
+};
 
-
+const getAvailabilitySlot = async () => {
+  const data = await Slot.find({ isBooked: false }).populate("room");
+  if (!data) {
+    throw new AppError(404, "Slot not found");
+  }
+  if (data.length === 0) {
+    throw new AppError(404, "Slot not found");
+  }
+  return data;
+};
 
 export const SlotService = {
-    createSlot,
-}
+  createSlot,
+  getAvailabilitySlot,
+};
