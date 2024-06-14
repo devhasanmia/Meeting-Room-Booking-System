@@ -1,10 +1,15 @@
 import { RequestHandler } from "express";
 import catchAsync from "../../utils/catchAsync";
 import { BookingService } from "./booking.service";
+import { Tcredential } from "../../interface/credential";
 
 const CreateBooking: RequestHandler = catchAsync(async (req, res, next) => {
+  const user = req.user;
   const payload = req.body;
-  const booking = await BookingService.createBooking(payload);
+  const booking = await BookingService.createBooking(
+    user as Tcredential,
+    payload
+  );
   console.log(booking.isConfirmed);
   res.status(200).json({
     success: true,
@@ -15,7 +20,8 @@ const CreateBooking: RequestHandler = catchAsync(async (req, res, next) => {
 });
 
 const GetAllBookings = catchAsync(async (req, res, next) => {
-  const bookings = await BookingService.getAllBookings();
+  const user = req.user;
+  const bookings = await BookingService.getAllBookings(user as Tcredential);
   res.status(200).json({
     success: true,
     statusCode: 200,
@@ -25,8 +31,8 @@ const GetAllBookings = catchAsync(async (req, res, next) => {
 });
 
 const getOwnBooking = catchAsync(async (req, res, next) => {
-  const bookingUser = req.user;
-  const bookings = await BookingService.OwnBooking(bookingUser);
+  const user = req.user;
+  const bookings = await BookingService.OwnBooking(user as Tcredential);
   res.status(200).json({
     success: true,
     statusCode: 200,
@@ -36,9 +42,14 @@ const getOwnBooking = catchAsync(async (req, res, next) => {
 });
 
 const updateBooking = catchAsync(async (req, res, next) => {
+  const user = req.user;
   const id = req.params.id;
   const payload = req.body;
-  const booking = await BookingService.updateBooking(id, payload);
+  const booking = await BookingService.updateBooking(
+    user as Tcredential,
+    id,
+    payload
+  );
   res.status(200).json({
     success: true,
     statusCode: 200,
@@ -47,9 +58,25 @@ const updateBooking = catchAsync(async (req, res, next) => {
   });
 });
 
+const deleteBooking = catchAsync(async (req, res, next) => {
+  const user = req.user;
+  const id = req.params.id;
+  const booking = await BookingService.deleteBooking(
+    user as Tcredential,
+    id
+  );
+  res.status(200).json({
+    success: true,
+    statusCode: 200,
+    message: "Booking deleted successfully",
+    data: booking,
+  });
+})
+
 export const BookingController = {
   CreateBooking,
   GetAllBookings,
   getOwnBooking,
-  updateBooking
+  updateBooking,
+  deleteBooking
 };

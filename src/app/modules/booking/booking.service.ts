@@ -1,11 +1,13 @@
 import AppError from "../../errors/AppError";
+import { Tcredential } from "../../interface/credential";
+import credentialValidator from "../../utils/credentialValidator";
 import Room from "../room/room.model";
 import Slot from "../slot/slot.model";
-import User from "../user/user.model";
 import { Tbooking } from "./booking.interface";
 import Booking from "./booking.model";
 
-const createBooking = async (payload: Tbooking) => {
+const createBooking = async (user: Tcredential, payload: Tbooking) => {
+  await credentialValidator(user);
   const room = await Room.findById(payload.room);
   if (!room || room.isDeleted) {
     throw new AppError(404, "Room not found");
@@ -13,10 +15,6 @@ const createBooking = async (payload: Tbooking) => {
   const slots = await Slot.find({ _id: { $in: payload.slots } });
   if (slots.length !== payload.slots.length) {
     throw new AppError(404, "One or more slots not found");
-  }
-  const user = await User.findById(payload.user);
-  if (!user) {
-    throw new AppError(404, "User not found");
   }
 
   let totalDuration = 0;
@@ -46,7 +44,8 @@ const createBooking = async (payload: Tbooking) => {
   return booking;
 };
 
-const getAllBookings = async () => {
+const getAllBookings = async (user: Tcredential) => {
+  await credentialValidator(user);
   const bookings = await Booking.find({ isDeleted: false })
     .populate({ path: "room", select: "-isDeleted" })
     .populate({ path: "slots", select: "-isDeleted" })
@@ -54,31 +53,42 @@ const getAllBookings = async () => {
   return bookings;
 };
 
-const OwnBooking = async (bookingUser: any) => {
-  console.log(bookingUser);
-  const UserId = bookingUser.userId;
-  const user = await User.findById(UserId);
-  if (!user) {
-    throw new AppError(404, "User not found");
-  }
+const OwnBooking = async (user: Tcredential) => {
+  await credentialValidator(user);
+  const UserId = user.userId;
   const bookings = await Booking.find({ user: UserId, isDeleted: false });
   return bookings;
 };
 
-const updateBooking = async (id: string, payload: Partial<Tbooking>) => {
+const updateBooking = async (
+  user: Tcredential,
+  id: string,
+  payload: Partial<Tbooking>
+) => {
+  await credentialValidator(user);
   const booking = await Booking.findById(id);
-  if (!booking) {
+  if (!booking || booking.isDeleted) {
     throw new AppError(404, "Booking not found");
   }
-
-  const isConfirmedUpdate = Booking.findByIdAndUpdate(id, payload, {
+  const bookingUpdate = Booking.findByIdAndUpdate(id, payload, {
     new: true,
   });
-  return isConfirmedUpdate;
+  return bookingUpdate;
 };
+
+
+const deleteBooking = async (user: Tcredential, id: string) => {
+  await credentialValidator(user);
+  const booking = await Booking.findByIdAndUpdate(id, { isDeleted: true }, {new: true});
+  if (!booking || booking.isDeleted) {
+    throw new AppError(404, "Booking not found");
+  }
+  return booking
+}
 export const BookingService = {
   createBooking,
   getAllBookings,
   OwnBooking,
   updateBooking,
+  deleteBooking
 };

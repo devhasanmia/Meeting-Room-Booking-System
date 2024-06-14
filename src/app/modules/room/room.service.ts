@@ -1,8 +1,11 @@
 import AppError from "../../errors/AppError";
+import { Tcredential } from "../../interface/credential";
+import credentialValidator from "../../utils/credentialValidator";
 import { Troom } from "./room.interface";
 import Room from "./room.model";
 
-const createRoom = async (payload: Troom) => {
+const createRoom = async (user: Tcredential, payload: Troom) => {
+  await credentialValidator(user);
   const room = await Room.create(payload);
   if (!room) {
     throw new AppError(400, "Room creation failed");
@@ -36,7 +39,8 @@ const getAllRooms = async () => {
   return rooms;
 };
 
-const updateRoom = async (id: string, payload: Troom) => {
+const updateRoom = async (user: Tcredential, id: string, payload: Troom) => {
+  await credentialValidator(user);
   const room = await Room.findByIdAndUpdate(id, payload, { new: true });
   if (!room) {
     throw new AppError(404, "Room not found");
@@ -44,17 +48,22 @@ const updateRoom = async (id: string, payload: Troom) => {
   return room;
 };
 
-const deletedRoom = async (id: string) => {
-    const room = await Room.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
-    if (!room) {
-      throw new AppError(404, "Room not found");
-    }
-    return room;
-}
+const deletedRoom = async (user: Tcredential, id: string) => {
+  await credentialValidator(user);
+  const room = await Room.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    { new: true }
+  );
+  if (!room) {
+    throw new AppError(404, "Room not found");
+  }
+  return room;
+};
 export const RoomService = {
   createRoom,
   getSingleRoom,
   getAllRooms,
   updateRoom,
-  deletedRoom
+  deletedRoom,
 };
