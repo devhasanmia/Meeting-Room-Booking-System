@@ -3,10 +3,9 @@ import { Tbooking } from "./booking.interface";
 
 const bookingSchema = new Schema<Tbooking>(
   {
-    room: {
-      type: Schema.Types.ObjectId,
+    date: {
+      type: String,
       required: true,
-      ref: "Room",
     },
     slots: [
       {
@@ -15,28 +14,29 @@ const bookingSchema = new Schema<Tbooking>(
         ref: "Slot",
       },
     ],
+    room: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "Room",
+    },
     user: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: "User",
     },
-    date: {
-      type: Date,
-      default: Date.now(),
-    },
-    isDeleted: {
-      type: Boolean,
-      default: false,
+    totalAmount: {
+      type: Number,
+      default: 0,
     },
     isConfirmed: {
       type: String,
       enum: ["confirmed", "unconfirmed", "canceled"],
       default: "unconfirmed",
     },
-    totalAmount: {
-      type: Number,
-      default: 0,
-    }
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

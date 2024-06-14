@@ -8,7 +8,6 @@ import Slot from "./slot.model";
 const createSlot = async (user: Tcredential, payload: Tslot) => {
   await credentialValidator(user);
   const room = await Room.findById(payload.room);
-  console.log(user);
   if (!room || room.isDeleted) {
     throw new AppError(404, "Room not found");
   }

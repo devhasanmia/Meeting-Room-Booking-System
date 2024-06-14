@@ -6,14 +6,7 @@ const credentialValidator = async (user: Tcredential) => {
   if (!user || !user.userId) {
     throw new AppError(400, "User ID is required");
   }
-
-  let userExist;
-  try {
-    userExist = await User.findById(user.userId);
-  } catch (error) {
-    throw new AppError(500, "An error occurred while checking credentials");
-  }
-
+  let userExist = await User.findById(user.userId);
   if (!userExist) {
     throw new AppError(404, "Invalid credentials");
   }

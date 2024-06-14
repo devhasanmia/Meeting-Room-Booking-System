@@ -10,12 +10,11 @@ const CreateBooking: RequestHandler = catchAsync(async (req, res, next) => {
     user as Tcredential,
     payload
   );
-  console.log(booking.isConfirmed);
   res.status(200).json({
     success: true,
     statusCode: 200,
     message: "Booking created successfully",
-    booking,
+    data:booking,
   });
 });
 
@@ -25,7 +24,7 @@ const GetAllBookings = catchAsync(async (req, res, next) => {
   res.status(200).json({
     success: true,
     statusCode: 200,
-    message: "Bookings retrieved successfully",
+    message: "All bookings retrieved successfully",
     data: bookings,
   });
 });

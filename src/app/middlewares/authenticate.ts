@@ -20,24 +20,28 @@ const authenticate = (...roles: TUserRole[]) => {
     if (!token) {
       throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized");
     }
-    jwt.verify(token, config.SECRET_KEY as string, function (err, decoded) {
-      if (err) {
-        return next(
-          new AppError(httpStatus.UNAUTHORIZED, "You are not authorized")
-        );
+    jwt.verify(
+      token,
+      config.SECRET_KEY as string,
+      function (err: any, decoded) {
+        if (err) {
+          return next(
+            new AppError(httpStatus.UNAUTHORIZED, "You are not authorized")
+          );
+        }
+        const userRole = (decoded as JwtPayload).role as TUserRole;
+        if (roles.length && !roles.includes(userRole)) {
+          return next(
+            new AppError(
+              httpStatus.UNAUTHORIZED,
+              "You have no access to this route"
+            )
+          );
+        }
+        req.user = decoded as JwtPayload;
+        next();
       }
-      const userRole = (decoded as JwtPayload).role as TUserRole;
-      if (roles.length && !roles.includes(userRole)) {
-        return next(
-          new AppError(
-            httpStatus.UNAUTHORIZED,
-            "You have no access to this route"
-          )
-        );
-      }
-      req.user = decoded as JwtPayload;
-      next();
-    });
+    );
   });
 };
 

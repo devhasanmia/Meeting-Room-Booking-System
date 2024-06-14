@@ -1,63 +1,54 @@
 import { z } from "zod";
-
 const create = z.object({
-  room: z.string().min(1, "Room ID is required"),
-  slots: z.array(
-    z.string({
-      invalid_type_error: "Slot ID must be a string",
-      required_error: "Slot ID is required",
-    })
-  ),
-  user: z
-    .string({
-      invalid_type_error: "User ID must be a string",
-      required_error: "User ID is required",
-    })
-    .min(1),
-  date: z.date().default(() => new Date()),
-  isDeleted: z.boolean().optional().default(false),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {
+    message: "Date must be in the format YYYY-MM-DD",
+  }),
+  slots: z.array(z.string()),
+  room: z.string({
+    invalid_type_error: "Room ID must be a string",
+    required_error: "Room ID is required",
+  }),
+  user: z.string({
+    invalid_type_error: "User ID must be a string",
+    required_error: "User ID is required",
+  }),
+  totalAmount: z.number().default(0),
   isConfirmed: z
     .enum(["confirmed", "unconfirmed", "canceled"])
     .default("unconfirmed"),
-  totalAmount: z
-    .number()
-    .nonnegative("Total amount must be a non-negative number")
-    .default(0),
+  isDeleted: z.boolean().default(false),
 });
 
 const update = z.object({
-  room: z.string().min(1, { message: "Room ID is required" }).optional(),
+  date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, {
+      message: "Date must be in the format YYYY-MM-DD",
+    })
+    .optional(),
   slots: z
     .array(
-      z
-        .string({
-          invalid_type_error: "Slot ID must be a string",
-          required_error: "Slot ID is required",
-        })
-        .min(1)
+      z.string({
+        invalid_type_error: "Slot ID must be a string",
+        required_error: "Slot ID is required",
+      })
     )
+    .optional(),
+  room: z
+    .string({
+      invalid_type_error: "Room ID must be a string",
+      required_error: "Room ID is required",
+    })
     .optional(),
   user: z
     .string({
       invalid_type_error: "User ID must be a string",
       required_error: "User ID is required",
     })
-    .min(1)
     .optional(),
-  date: z
-    .date()
-    .default(() => new Date())
-    .optional(),
-  isDeleted: z.boolean().default(false).optional(),
-  isConfirmed: z
-    .enum(["confirmed", "unconfirmed", "canceled"])
-    .default("unconfirmed")
-    .optional(),
-  totalAmount: z
-    .number()
-    .nonnegative({ message: "Total amount must be a non-negative number" })
-    .default(0)
-    .optional(),
+  totalAmount: z.number().optional(),
+  isConfirmed: z.enum(["confirmed", "unconfirmed", "canceled"]).optional(),
+  isDeleted: z.boolean().optional(),
 });
 
 export const BookingValidator = {
