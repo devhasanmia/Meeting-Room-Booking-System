@@ -5,14 +5,10 @@ import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import notFound from "./app/middlewares/notFound";
 const app: Application = express();
 
-// Parser
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-
-app.use("/", router);
-app.get("/api/v1/health", (req: Request, res: Response) => {
+app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
     status: "OK",
     message: "Server is up and running!",
@@ -25,17 +21,9 @@ app.get("/api/v1/health", (req: Request, res: Response) => {
     dateTime: new Date().toLocaleString(),
   });
 });
-app.get("/", (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    statusCode: 200,
-    message: "Server is up and running!",
-  });
-});
+app.use("/api", router);
+
 app.use(globalErrorHandler);
 app.use(notFound);
-
-
-
 
 export default app;

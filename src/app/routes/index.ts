@@ -6,19 +6,19 @@ import { BookingRoutes } from "../modules/booking/booking.route";
 const router = Router();
 const moduleRoutes = [
   {
-    path: "/api/auth/",
+    path: "/auth",
     route: UserRoutes,
   },
   {
-    path: "/api",
+    path: "/",
     route: RoomRoutes,
   },
   {
-    path: "/api",
+    path: "/",
     route: SlotRoutes,
   },
   {
-    path: "/api",
+    path: "/",
     route: BookingRoutes,
   },
 ];

@@ -8,7 +8,7 @@ async function main() {
     await mongoose.connect(config.databaseURL as string);
     console.log('Database connected Successfully!');
     app.listen(config.port, () => {
-      console.log(`Server is Runnig on Port ${config.port} Please visit http://localhost:${config.port}/api/v1/health`);
+      console.log(`Server is Runnig on Port ${config.port} Please visit http://localhost:${config.port}/`);
     });
   } catch (error) {
     console.error('Failed to start server:', error);

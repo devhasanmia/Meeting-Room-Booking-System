@@ -1,4 +1,4 @@
-import { TErrorSource, TGenericErrorResponse } from '../interface/error';
+import { TErrorSource, TGenericErrorResponse } from "../interface/error";
 
 // Use Regex
 const handleDuplicateError = (err: any): TGenericErrorResponse => {
@@ -6,13 +6,13 @@ const handleDuplicateError = (err: any): TGenericErrorResponse => {
   const extractedMsg = match && match[1];
   const errorMessages: TErrorSource = [
     {
-      path: '',
+      path: "",
       message: `${extractedMsg} already exists`,
     },
   ];
   return {
     status: 400,
-    message: 'Duplicate Entry',
+    message: "Duplicate Entry",
     errorMessages,
   };
 };
