@@ -28,6 +28,15 @@ const bookingSchema = new Schema<Tbooking>(
       type: Boolean,
       default: false,
     },
+    isConfirmed: {
+      type: String,
+      enum: ["confirmed", "unconfirmed", "canceled"],
+      default: "unconfirmed",
+    },
+    totalAmount: {
+      type: Number,
+      default: 0,
+    }
   },
   { timestamps: true }
 );
