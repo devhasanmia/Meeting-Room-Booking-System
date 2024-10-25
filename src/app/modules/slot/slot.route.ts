@@ -12,7 +12,7 @@ router.post(
   validateRequest(SlotValidation.slotValidationSchema as any),
   SlotController.createSlot
 );
-
 router.get("/slots/availability", SlotController.getAllSlot);
+router.get("/slots/availabilitys", SlotController.getDateToSlot);
 
 export const SlotRoutes = router;

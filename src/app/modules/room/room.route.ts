@@ -14,7 +14,7 @@ router.post(
   RoomController.createRoom
 );
 router.get("/rooms/:id", RoomController.getSingleRoom);
-router.get("/rooms/", RoomController.GetAllRooms);
+router.get("/rooms", RoomController.GetAllRooms);
 router.put(
   "/rooms/:id",
   authenticate(USER_ROLE.admin),

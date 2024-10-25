@@ -16,16 +16,40 @@ const createSlot: RequestHandler = catchAsync(async (req, res, next) => {
 });
 
 const getAllSlot: RequestHandler = catchAsync(async (req, res, next) => {
-  const slot = await SlotService.getAvailabilitySlot();
+  const slots = await SlotService.getAvailabilitySlot();
   res.status(200).json({
     success: true,
     statusCode: 200,
     message: "Available slots retrieved successfully",
-    data: slot,
+    data: slots,
+  });
+});
+
+const getDateToSlot: RequestHandler = catchAsync(async (req, res, next) => {
+  const { date, room } = req.query;
+  const query: any = {};
+
+  if (date && room) {
+    query.date = date;
+    query.room = room;
+  } else if (!date && !room) {
+    return next({
+      statusCode: 400,
+      message: "Both 'date' and 'room' query parameters are required.",
+    });
+  }
+
+  const slots = await SlotService.getDateToSlot(query);
+  res.status(200).json({
+    success: true,
+    statusCode: 200,
+    message: "Available slots retrieved successfully",
+    data: slots,
   });
 });
 
 export const SlotController = {
   createSlot,
   getAllSlot,
+  getDateToSlot,
 };

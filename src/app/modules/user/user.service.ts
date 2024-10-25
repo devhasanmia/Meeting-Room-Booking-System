@@ -24,16 +24,14 @@ const login = async (payload: TLogin) => {
   }
   const accessToken = jwt.sign(
     {
+      name: user.name,
       userId: user._id,
-      email: user.email,
       role: user.role,
     },
     config.SECRET_KEY as string,
     { expiresIn: "30d" }
   );
-
   const data = await User.findById(user._id).select("-password -__v");
-
   return {
     data,
     token: accessToken,

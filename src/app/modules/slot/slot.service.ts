@@ -19,7 +19,18 @@ const createSlot = async (user: Tcredential, payload: Tslot) => {
 };
 
 const getAvailabilitySlot = async () => {
-  const data = await Slot.find({ isBooked: false }).populate("room");
+  const data = await Slot.find().populate("room");
+  if (!data) {
+    throw new AppError(404, "Slot not found");
+  }
+  if (data.length === 0) {
+    throw new AppError(404, "Slot not found");
+  }
+  return data;
+};
+
+const getDateToSlot = async (query: any) => {
+  const data = await Slot.find(query).populate("room");
   if (!data) {
     throw new AppError(404, "Slot not found");
   }
@@ -32,4 +43,5 @@ const getAvailabilitySlot = async () => {
 export const SlotService = {
   createSlot,
   getAvailabilitySlot,
+  getDateToSlot
 };
