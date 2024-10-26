@@ -39,9 +39,17 @@ const getDateToSlot = async (query: any) => {
   }
   return data;
 };
+const getSlotById = async (id: string) => {
+  const data = await Slot.findById(id);
+  if (!data) {
+    throw new AppError(404, "Slot not found");
+  }
+  return data;
+};
 
 export const SlotService = {
   createSlot,
   getAvailabilitySlot,
-  getDateToSlot
+  getDateToSlot,
+  getSlotById
 };

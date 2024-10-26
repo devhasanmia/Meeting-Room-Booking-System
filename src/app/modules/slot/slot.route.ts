@@ -13,6 +13,7 @@ router.post(
   SlotController.createSlot
 );
 router.get("/slots/availability", SlotController.getAllSlot);
+router.get("/slots/availability/:id", SlotController.getSlotById)
 router.get("/slots/availabilitys", SlotController.getDateToSlot);
 
 export const SlotRoutes = router;
