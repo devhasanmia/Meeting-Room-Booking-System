@@ -25,7 +25,7 @@ const getSingleRoom = async (id: string) => {
 };
 
 const getAllRooms = async () => {
-  const rooms = await Room.find();
+  const rooms = await Room.find().sort({ createdAt: -1 });
   const s = rooms.filter((room) => room.isDeleted === false);
   if (s.length === 0) {
     throw new AppError(404, "Room Not Found");

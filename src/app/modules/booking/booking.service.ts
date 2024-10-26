@@ -40,9 +40,18 @@ const createBooking = async (user: Tcredential, payload: Tbooking) => {
 
   const hour = totalDuration / 60;
   const amount = room.pricePerSlot * hour;
-  payload.totalAmount = amount;
+  payload.totalAmount = Number(amount.toFixed(2));
 
+  function generateTransactionId() {
+    const prefix = "MR-";
+    const randomString = Math.random()
+      .toString(36)
+      .substring(2, 10)
+      .toUpperCase();
+    return prefix + randomString;
+  }
   payload.isConfirmed = "unconfirmed";
+  payload.transactionId = generateTransactionId();
   // Slots isBooked = flase or not
   await Slot.find({ _id: { $in: payload.slots } }).then((slots) => {
     slots.forEach((slot) => {
@@ -52,6 +61,7 @@ const createBooking = async (user: Tcredential, payload: Tbooking) => {
     });
   });
   const booking = await Booking.create(payload);
+
   await Slot.updateMany(
     { _id: { $in: payload.slots } },
     { $set: { isBooked: true } }
@@ -59,16 +69,12 @@ const createBooking = async (user: Tcredential, payload: Tbooking) => {
   await (
     await (await booking.populate("room")).populate("slots")
   ).populate({ path: "user", select: "-password" });
-  const tnxIdgen = () => {
-    const timestamp = Date.now();
-    const randomString = Math.random().toString(36).substring(2, 8);
-    return `${randomString}-${timestamp}`;
-  };
+
   const paymentData = {
-    tran_id: tnxIdgen(),
+    tran_id: booking.transactionId,
     amount: booking.totalAmount,
   };
-  const paymentSession = initiatePayment(paymentData);
+  const paymentSession = await initiatePayment(paymentData);
   return paymentSession;
 };
 
@@ -77,14 +83,20 @@ const getAllBookings = async (user: Tcredential) => {
   const bookings = await Booking.find({ isDeleted: false })
     .populate({ path: "room", select: "-isDeleted" })
     .populate({ path: "slots", select: "-isDeleted" })
-    .populate({ path: "user", select: "-password" });
+    .populate({ path: "user", select: "-password" })
+    .sort({ createdAt: -1 });
   return bookings;
 };
 
 const OwnBooking = async (user: Tcredential) => {
   await credentialValidator(user);
   const UserId = user.userId;
-  const bookings = await Booking.find({ user: UserId, isDeleted: false });
+  const bookings = await Booking.find({
+    user: UserId,
+    isDeleted: false,
+  })
+    .populate([{ path: "slots" }, { path: "room" }])
+    .sort({ createdAt: -1 });
   return bookings;
 };
 

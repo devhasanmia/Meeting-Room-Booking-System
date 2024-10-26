@@ -6,7 +6,6 @@ import express from "express";
 import { RoomValidation } from "./room.validation";
 
 const router = express.Router();
-
 router.post(
   "/rooms",
   authenticate(USER_ROLE.admin),

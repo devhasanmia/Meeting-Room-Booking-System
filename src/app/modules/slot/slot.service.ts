@@ -19,7 +19,7 @@ const createSlot = async (user: Tcredential, payload: Tslot) => {
 };
 
 const getAvailabilitySlot = async () => {
-  const data = await Slot.find().populate("room");
+  const data = await Slot.find().populate("room").sort({ createdAt: -1 });
   if (!data) {
     throw new AppError(404, "Slot not found");
   }
@@ -30,7 +30,7 @@ const getAvailabilitySlot = async () => {
 };
 
 const getDateToSlot = async (query: any) => {
-  const data = await Slot.find(query).populate("room");
+  const data = await Slot.find(query).populate("room").sort({ createdAt: -1 });
   if (!data) {
     throw new AppError(404, "Slot not found");
   }

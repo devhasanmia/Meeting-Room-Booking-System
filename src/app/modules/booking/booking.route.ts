@@ -12,11 +12,13 @@ router.post(
   validateRequest(BookingValidator.create),
   BookingController.CreateBooking
 );
+
 router.get(
   "/bookings",
   authenticate(USER_ROLE.admin),
   BookingController.GetAllBookings
 );
+
 router.get(
   "/my-bookings",
   authenticate(USER_ROLE.user),

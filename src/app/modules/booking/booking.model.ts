@@ -38,6 +38,10 @@ const bookingSchema = new Schema<Tbooking>(
       enum: ["Paid", "Unpaid"],
       default: "Unpaid",
     },
+    transactionId: {
+      type: String,
+      default: ""
+    },
     isDeleted: {
       type: Boolean,
       default: false,
