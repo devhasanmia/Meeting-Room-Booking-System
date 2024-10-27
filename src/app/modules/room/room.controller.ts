@@ -6,7 +6,11 @@ import { Tcredential } from "../../interface/credential";
 const createRoom: RequestHandler = catchAsync(async (req, res) => {
   const user = req.user;
   const payload = req.body;
-  const room = await RoomService.createRoom(user as Tcredential, payload);
+  const room = await RoomService.createRoom(
+    req.file,
+    user as Tcredential,
+    payload
+  );
   res.status(200).json({
     success: true,
     statusCode: 200,

@@ -3,6 +3,9 @@ import { Troom } from "./room.interface";
 
 const roomSchema = new Schema<Troom>(
   {
+    image: {
+      type: String,
+    },
     name: {
       type: String,
       required: true,

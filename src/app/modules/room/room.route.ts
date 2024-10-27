@@ -2,14 +2,15 @@ import authenticate from "../../middlewares/authenticate";
 import validateRequest from "../../middlewares/validateRequest";
 import { USER_ROLE } from "../user/user.constant";
 import { RoomController } from "./room.controller";
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { RoomValidation } from "./room.validation";
+import { upload } from "../../utils/sendImage";
 
 const router = express.Router();
 router.post(
   "/rooms",
   authenticate(USER_ROLE.admin),
-  validateRequest(RoomValidation.create),
+  upload.single("file"),
   RoomController.createRoom
 );
 router.get("/rooms/:id", RoomController.getSingleRoom);

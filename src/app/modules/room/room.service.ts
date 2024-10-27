@@ -1,11 +1,26 @@
 import AppError from "../../errors/AppError";
 import { Tcredential } from "../../interface/credential";
 import credentialValidator from "../../utils/credentialValidator";
+import { sendImage } from "../../utils/sendImage";
 import { Troom } from "./room.interface";
 import Room from "./room.model";
 
-const createRoom = async (user: Tcredential, payload: Troom) => {
+const createRoom = async (file: any, user: Tcredential, payload: Troom) => {
   await credentialValidator(user);
+  const randomString = (length = 5) => {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    return result;
+  };
+  const imagePath = file;
+  const imageName = `${payload.name}-${randomString()}`;
+  const { secure_url } = await sendImage(imagePath.path, imageName);
+  payload.image = secure_url;
   const room = await Room.create(payload);
   if (!room) {
     throw new AppError(400, "Room creation failed");
