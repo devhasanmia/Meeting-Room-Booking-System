@@ -7,6 +7,7 @@ import Room from "./room.model";
 
 const createRoom = async (file: any, user: Tcredential, payload: Troom) => {
   await credentialValidator(user);
+
   const randomString = (length = 5) => {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let result = "";
@@ -17,14 +18,19 @@ const createRoom = async (file: any, user: Tcredential, payload: Troom) => {
     }
     return result;
   };
-  const imagePath = file;
-  const imageName = `${payload.name}-${randomString()}`;
-  const { secure_url } = await sendImage(imagePath.path, imageName);
-  payload.image = secure_url;
+
+  const imagePath = file ? file.path : null;
+  if (imagePath) {
+    const imageName = `${payload.name}-${randomString()}`;
+    const { secure_url } = await sendImage(imagePath, imageName);
+    payload.image = secure_url;
+  }
+
   const room = await Room.create(payload);
   if (!room) {
     throw new AppError(400, "Room creation failed");
   }
+
   return room;
 };
 

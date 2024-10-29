@@ -5,6 +5,8 @@ const roomSchema = new Schema<Troom>(
   {
     image: {
       type: String,
+      default:
+        "https://res.cloudinary.com/ddoacwzvp/image/upload/v1730093656/sdfsd-JVFEV.jpg",
     },
     name: {
       type: String,

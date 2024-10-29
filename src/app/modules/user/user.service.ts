@@ -37,7 +37,32 @@ const login = async (payload: TLogin) => {
     token: accessToken,
   };
 };
+
+const getAllUser = async () => {
+  const userData = User.find({ role: "user" }).select("-password -__v");
+  return userData;
+};
+
+const updateUser = async (id: string, payload: Partial<TUser>) => {
+  const user = await User.findByIdAndUpdate(id, payload, { new: true });
+  if (!user) {
+    throw new AppError(404, "User not found");
+  }
+  return user;
+};
+
+const deleteUser = async (id: string) => {
+  const user = await User.findByIdAndDelete(id);
+  if (!user) {
+    throw new AppError(404, "User not found");
+  }
+  return user;
+}
+
 export const UserService = {
   signup,
   login,
+  getAllUser,
+  updateUser,
+  deleteUser
 };

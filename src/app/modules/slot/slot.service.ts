@@ -19,7 +19,9 @@ const createSlot = async (user: Tcredential, payload: Tslot) => {
 };
 
 const getAvailabilitySlot = async () => {
-  const data = await Slot.find().populate("room").sort({ createdAt: -1 });
+  const data = await Slot.find({ isBooked: false })
+    .populate("room")
+    .sort({ createdAt: -1 });
   if (!data) {
     throw new AppError(404, "Slot not found");
   }
@@ -40,16 +42,40 @@ const getDateToSlot = async (query: any) => {
   return data;
 };
 const getSlotById = async (id: string) => {
-  const data = await Slot.findById(id);
+  const data = await Slot.findById(id).populate("room").sort({ createdAt: -1 });
   if (!data) {
     throw new AppError(404, "Slot not found");
   }
   return data;
 };
 
+const updateSlot = async (user: Tcredential, id: string, payload: Tslot) => {
+  await credentialValidator(user);
+  const room = await Room.findById(payload.room);
+  if (!room || room.isDeleted) {
+    throw new AppError(404, "Room not found");
+  }
+  const updatedSlot = await Slot.findByIdAndUpdate(id, payload, { new: true });
+  if (!updatedSlot) {
+    throw new AppError(404, "Slot not found");
+  }
+  return updatedSlot;
+};
+
+const deleteSlot = async (user: Tcredential, id: string) => {
+  await credentialValidator(user);
+  const slot = await Slot.findByIdAndDelete(id);
+  if (!slot) {
+    throw new AppError(404, "Slot not found");
+  }
+  return slot;
+};
+
 export const SlotService = {
   createSlot,
   getAvailabilitySlot,
   getDateToSlot,
-  getSlotById
+  getSlotById,
+  deleteSlot,
+  updateSlot,
 };
