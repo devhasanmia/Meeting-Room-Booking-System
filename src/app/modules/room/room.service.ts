@@ -20,6 +20,7 @@ const createRoom = async (file: any, user: Tcredential, payload: Troom) => {
   };
 
   const imagePath = file ? file.path : null;
+  
   if (imagePath) {
     const imageName = `${payload.name}-${randomString()}`;
     const { secure_url } = await sendImage(imagePath, imageName);
