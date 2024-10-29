@@ -13,7 +13,7 @@ app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
     status: "OK",
     message: "Server is up and running!",
-    version: "1.0.2",
+    version: "1.0.3",
     author: {
       name: "Md. Hasan Mia",
       email: "hasanmiadev@gmail.com",

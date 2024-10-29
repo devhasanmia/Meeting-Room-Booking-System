@@ -3,9 +3,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const initiatePayment = async (paymentData: any) => {
-  const response = await axios.post(process.env.PAYMENT_URL!, {
-    store_id: process.env.STORE_ID,
-    signature_key: process.env.SIGNATURE_KEY,
+  const response = await axios.post("https://sandbox.aamarpay.com/jsonpost.php", {
+    store_id: "aamarpaytest",
+    signature_key: "dbb74894e82415a2f7ff0ec3a97e4183",
     tran_id: paymentData.tran_id,
     success_url: `meeting-room-booking-system-one.vercel.app/api/payment/confirmation?transactionId=${paymentData.tran_id}`,
     fail_url: "meeting-room-booking-system-one.vercel.app/api/payment/paymentFaild",
