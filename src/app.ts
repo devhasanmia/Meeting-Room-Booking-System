@@ -7,7 +7,7 @@ const app: Application = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: ["https://meeting-room-five.vercel.app"] }));
+app.use(cors({ origin: ["https://meeting-room-five.vercel.app", "http://localhost:5173/"] }));
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
