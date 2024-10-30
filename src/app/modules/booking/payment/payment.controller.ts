@@ -23,7 +23,7 @@ const confirmation = async (
         <h1 class="text-4xl font-bold text-green-700 mb-4">Payment Successful!</h1>
         <p class="text-gray-800 mb-4">Your payment has been received.</p>
         <p class="text-gray-800 mb-6">Your booking will be confirmed very soon thanks</p>
-        <a href="meeting-room-booking-system-one.vercel.app/user/my-booking" class="inline-block bg-green-600 text-white font-semibold rounded-lg px-6 py-3 hover:bg-green-700 transition duration-200 transform hover:scale-105">Go to Dashboard</a>
+        <a href="https://meeting-room-five.vercel.app/user/my-booking" class="inline-block bg-green-600 text-white font-semibold rounded-lg px-6 py-3 hover:bg-green-700 transition duration-200 transform hover:scale-105">Go to Dashboard</a>
       </div>
     </body>
     </html>
@@ -47,7 +47,7 @@ const paymentFaild = async (
       <div class="bg-white shadow-lg rounded-lg p-8 text-center">
         <h1 class="text-4xl font-bold text-red-700 mb-4">Payment Faild!</h1>
         <p class="text-gray-800 mb-4">Your payment has been Faild Please Try again.</p>
-        <a href="meeting-room-booking-system-one.vercel.app/user/my-booking" class="inline-block bg-green-600 text-white font-semibold rounded-lg px-6 py-3 hover:bg-green-700 transition duration-200 transform hover:scale-105">Go to Dashboard</a>
+        <a href="https://meeting-room-five.vercel.app/user/my-booking" class="inline-block bg-green-600 text-white font-semibold rounded-lg px-6 py-3 hover:bg-green-700 transition duration-200 transform hover:scale-105">Go to Dashboard</a>
       </div>
     </body>
     </html>
